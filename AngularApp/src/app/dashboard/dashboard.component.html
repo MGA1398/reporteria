@@ -1,0 +1,71 @@
+<div *ngIf='this.isLogin' class="container">
+  <h1 class="text-center text-black">Historial</h1>
+  <div class="col-12 d-flex mt-3">
+    <form #myForm="ngForm" novalidate class="col text-center">
+      <label class="me-2">Desde</label>
+      <input type="date" [(ngModel)]="from" name="from" class="w-50">
+    </form>
+    <form #myForm="ngForm" novalidate class="col text-center">
+      <label class="me-2">Hasta</label>
+      <input type="date" [(ngModel)]="upto" name="upto" class="w-50">
+    </form>
+    <div class="col text-center">
+      <label class="me-2">Pacientes</label>
+      <select [(ngModel)]="selectPet" name="selectPet" class="w-50">
+        <option>Todos</option>
+        <option *ngFor="let pet of pets" [ngValue]="pet.id">{{pet.name}}</option>
+      </select>
+    </div>
+    <div class="col text-center">
+      <label class="me-2">Servicios</label>
+      <select [(ngModel)]="selectService" name="selectService" class="w-50">
+        <option>Todos</option>
+        <option *ngFor="let service of services" [ngValue]="service.id">{{service.type}}</option>
+      </select>
+    </div>
+    <div class="col text-center">
+      <label class="me-2">Especialidad</label>
+      <select [(ngModel)]="selectSpecialty" name="selectSpecialty" class="w-50">
+        <option>Todos</option>
+        <option *ngFor="let specialty of specialities" [ngValue]="specialty.id">{{specialty.type}}</option>
+      </select>
+    </div>
+    <div class="col text-center">
+      <label class="me-2">Enfermedad pre-existente</label>
+      <select [(ngModel)]="selectDisease" name="selectDisease" class="w-50">
+        <option>Ninguna</option>
+        <option *ngFor="let disease of diseases" [ngValue]="disease.id">{{disease.type}}</option>
+      </select>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Paciente</th>
+      <th>Servicio</th>
+      <th>Fecha</th>
+      <th>Enfermedad</th>
+      <th>Descripcion</th>
+      <th>Costo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="cursor-pointer" *ngFor="let transaction of transactions | selectFilter: selectPet | serviceFilter: selectService | specialtyFilter: selectSpecialty | dateFilter: from :upto | diseaseFilter: selectDisease"
+        routerLink="/transactionDetail/{{transaction.id}}">
+      <td>{{transaction.patient_name }}</td>
+      <td>{{ transaction.service_type }}</td>
+      <td>{{ transaction.transaction_date | date:'longDate': 'es:Es' }}</td>
+      <td>{{ transaction.disease_type }}</td>
+      <td>{{ transaction.transaction_description }}</td>
+      <td>{{ transaction.transaction_amount }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center">
+    <h2>Total: {{transactions | selectFilter: selectPet | serviceFilter: selectService | specialtyFilter: selectSpecialty | dateFilter: from :upto | diseaseFilter: selectDisease | filterCount}}</h2>
+  </div>
+</div>
+<div *ngIf='!this.isLogin'>
+  <h2>You must login first</h2>
+  <a class='btn btn-outline-info' routerLink="/auth/login">Log In</a>
+</div>

@@ -1,0 +1,97 @@
+<div *ngIf="transaction">
+  <h2>{{transaction.service_type + " " + transaction.patient_name | titlecase}} Detalles:</h2>
+  <div><span>Id de la transaccion: </span>{{transaction.id}}</div>
+  <div>
+    <label for="transaction-pat">Paciente: </label>
+    <input id="transaction-pat" placeholder="nombre" [readonly]="!isAdmin" [(ngModel)]="transaction.patient_name">
+  </div>
+  <div>
+    <label for="transaction-service">Servicio: </label>
+    <input id="transaction-service" placeholder="servicio" [readonly]="!isAdmin" [(ngModel)]="transaction.service_type">
+  </div>
+  <div>
+    <label for="transaction-serviceName">Costo servicio: </label>
+    <input id="transaction-serviceName" placeholder="precio" readonly [(ngModel)]="transaction.service_price">
+  </div>
+  <div>
+    <label for="transaction-specialty">Especialidad: </label>
+    <input id="transaction-specialty" placeholder="especialidad" [readonly]="!isAdmin" [(ngModel)]="transaction.speciality_type">
+  </div>
+  <div>
+    <label>Fecha: </label>
+    {{transaction.transaction_date | date:'longDate': 'es:Es'}}
+  </div>
+  <div *ngIf="isAdmin">
+    <label for="transaction-date">Fecha: </label>
+    <input id="transaction-date" type="date" [(ngModel)]="transaction.transaction_date">
+  </div>
+  <div class="d-flex">
+    <label for="transaction-description">Descripcion: </label>
+    <textarea id="transaction-description" [readonly]="!isAdmin" [(ngModel)]="transaction.transaction_description"></textarea>
+  </div>
+  <div>
+    <label for="transaction-amount">Total: </label>
+    <input id="transaction-amount" placeholder="precio" [readonly]="!isAdmin" [(ngModel)]="transaction.transaction_amount">
+  </div>
+  <button type="button" (click)="save()">Guardar</button>
+  <button type="button" (click)="goBack()">Atras</button>
+</div>
+<div *ngIf="!transaction">
+  <h2>Nueva Transaccion:</h2>
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="patient.name">Nombre: </label>
+      <select id="patient.name" name="patient" formControlName="patient_name" #pat [ngModel]="pat" (ngModelChange)="selectPet($event)">
+        <option [ngValue]="patient" *ngFor="let patient of pets">{{patient.name | titlecase}}</option>
+      </select>
+      <div *ngIf="submitted && myForm['patient_name'].errors?.['required']">
+        Debe seleccionar el paciente.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="service.type">Servicio: </label>
+      <select id="service.type" name="service" formControlName="service_type" #ser [ngModel]="ser" (ngModelChange)="selectService($event)">
+        <option [ngValue]="service" *ngFor="let service of services">{{service.type | titlecase}}</option>
+      </select>
+      <div *ngIf="submitted && myForm['service_type'].errors?.['required']">
+        Debe elegir el servicio realizado.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="service.name">Costo servicio: </label>
+      <input id="service.name" placeholder="precio" formControlName="service_price" readonly [(ngModel)]="service.price">
+    </div>
+    <div *ngIf="submitted && myForm['service_price'].errors?.['required']">
+      Debe elegir el servicio realizado.
+    </div>
+    <div class="form-group">
+      <label for="specialty.type">Especialidad: </label>
+      <select id="specialty.type" name="specialty" formControlName="speciality_type" #specialty [ngModel]="specialty" (ngModelChange)="selectSpecialty($event)">
+        <option [ngValue]="specialty" *ngFor="let specialty of specialities">{{specialty.type | titlecase}}</option>
+      </select>
+      <div *ngIf="submitted && myForm['speciality_type'].errors?.['required']">
+        Debe elegir la especialidad.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="transaction.date">Fecha: </label>
+      <input id="transaction.date" type="date" formControlName="transaction_date" [(ngModel)]="date">
+    </div>
+    <div *ngIf="submitted && myForm['transaction_date'].errors?.['required']">
+      Debe elegir la fecha.
+    </div>
+    <div class="form-group d-flex">
+      <label for="transaction.description">Descripcion: </label>
+      <textarea id="transaction.description" formControlName="transaction_description"></textarea>
+    </div>
+    <div *ngIf="submitted && myForm['transaction_description'].errors?.['required']">
+      Ingrese una detalle del servicio realizado.
+    </div>
+    <div class="form-group">
+      <label for="transaction.amount">Total: </label>
+      <input id="transaction.amount" formControlName="transaction_amount" placeholder="precio" [(ngModel)]="total">
+    </div>
+    <button type="submit">Crear</button>
+    <button type="button" (click)="goBack()">Atras</button>
+  </form>
+</div>

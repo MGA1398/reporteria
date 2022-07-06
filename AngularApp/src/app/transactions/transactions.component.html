@@ -1,0 +1,13 @@
+<h2>Transacciones</h2>
+<div class="object-menu">
+  <div *ngFor="let transaction of transactions">
+    <a routerLink="/transactionDetail/{{transaction.id}}">
+      {{transaction.service_type + " " + transaction.patient_name | titlecase}}
+    </a>
+    <button type="button" class="delete" title="delete transaction" (click)="delete(transaction)">x</button></div>
+</div>
+<div class="d-flex justify-content-end">
+  <button type="button" class="add-button" [routerLink]="'/transactionDetail'">
+    Nueva transaccion
+  </button>
+</div>

@@ -1,0 +1,57 @@
+<div *ngIf="component == 'service' && service">
+  <h2>Detalle Servicio {{service.type | uppercase}}</h2>
+  <div>
+    <label for="service-type">Tipo de servicio: </label>
+    <input id="service-type" [(ngModel)]="service.type" placeholder="servicio" [readonly]="!isAdmin">
+  </div>
+  <div>
+    <label for="service-price">Precio de servicio: </label>
+    <input id="service-price" [(ngModel)]="service.price" placeholder="precio" [readonly]="!isAdmin">
+  </div>
+  <button type="button" (click)="saveService()">Guardar</button>
+  <button type="button" (click)="goBack()">Atras</button>
+</div>
+<div *ngIf="component == 'service' && service==null">
+  <h2>Nuevo Servicio</h2>
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmitService()">
+    <div class="form-group">
+      <label for="new-type">Tipo de servicio: </label>
+      <input id="new-type" type="text" placeholder="Tipo servicio" formControlName="type">
+      <div *ngIf="submitted && myForm['type'].errors?.['required']">
+        Tipo es un campo obligatorio.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="new-price">Precio de servicio: </label>
+      <input id="new-price" placeholder="precio" type="number" formControlName="price">
+      <div *ngIf="submitted && myForm['price'].errors?.['required']">
+        Precio es un campo obligatorio.
+      </div>
+    </div>
+    <button type="submit">Guardar</button>
+    <button type="button" (click)="goBack()">Atras</button>
+  </form>
+</div>
+<div *ngIf="component == 'specialty' && specialty">
+  <h2>Detalle Especialidad {{specialty.type | uppercase}}</h2>
+  <div>
+    <label for="specialty-type">Tipo de especialidad: </label>
+    <input id="specialty-type" [(ngModel)]="specialty.type" placeholder="tipo" [readonly]="!isAdmin">
+  </div>
+  <button type="button" (click)="saveSpecialty()">Guardar</button>
+  <button type="button" (click)="goBack()">Atras</button>
+</div>
+<div *ngIf="component == 'specialty' && specialty==null">
+  <h2>Nueva Especialidad</h2>
+  <form [formGroup]="specialtyForm" (ngSubmit)="onSubmitSpecialty()">
+    <div class="form-group">
+      <label for="new-specialty">Tipo de especialidad: </label>
+      <input id="new-specialty" type="text" placeholder="Tipo espacialidad" formControlName="type">
+      <div *ngIf="submitted && myFormSpecialty['type'].errors?.['required']">
+        Tipo es un campo obligatorio.
+      </div>
+    </div>
+    <button type="submit">Guardar</button>
+    <button type="button" (click)="goBack()">Atras</button>
+  </form>
+</div>

@@ -1,0 +1,20 @@
+<div *ngIf="component == 'services'" class="container">
+  <h2>Servicios</h2>
+  <div class="object-menu">
+    <a *ngFor="let service of services" routerLink="/service/{{service.id}}">
+      {{service.type}}
+    </a>
+  </div>
+</div>
+<div *ngIf="component == 'specialty'">
+  <h2>Especialidades</h2>
+  <div class="object-menu">
+    <a *ngFor="let speciality of specialities" routerLink="/specialty/{{speciality.id}}">
+      {{speciality.type}}
+    </a>
+  </div>
+</div>
+<div *ngIf = '!this.isLogin'>
+  <h2>You must login first</h2>
+  <a class = 'btn btn-outline-info' routerLink="/auth/login">Log In</a>
+</div>
